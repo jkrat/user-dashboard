@@ -18,7 +18,7 @@ def check_for_duplicate_email(data):
     return mysql.query_db(query, data)
 
 def insert_user(data):
-    query = "INSERT INTO users (first_name, last_name, email, password, users_level, created_at, updated_at) VALUES (%(firstName)s, %(lastName)s, %(email)s, %(password)s, 1, NOW(), NOW());"
+    query = "INSERT INTO users (first_name, last_name, email, password, user_level, created_at, updated_at) VALUES (%(firstName)s, %(lastName)s, %(email)s, %(password)s, 1, NOW(), NOW());"
     return mysql.query_db(query, data)
 
 def check_password_match(data):
@@ -46,10 +46,10 @@ def validate_registration(data):
             flash("Email address already registered", "email")
             session['email_validation_error'] = 'is-invalid'
     #password validations
-    if len(request.form['password']) < 8:
+    if len(data['password']) < 8:
         flash('Password should be more than 8 characters', 'password')
         session['password_validation_error'] = 'is-invalid'
-    if request.form['password'] != request.form['confirmPassword']:
+    if data['password'] != data['confirmPassword']:
         flash('Passwords should match', 'confirmPassword')
         session['confirmPassword_validation_error'] = 'is-invalid'
     # registration fail
@@ -58,10 +58,10 @@ def validate_registration(data):
     #registration success
     else:
         user_insert_data= {
-            'firstName' : request.form['firstName'], 
-            'lastName' : request.form['lastName'], 
-            'email' : request.form['email'], 
-            'password' : bcrypt.generate_password_hash(request.form['password'])
+            'firstName' : data['firstName'], 
+            'lastName' : data['lastName'], 
+            'email' : data['email'], 
+            'password' : bcrypt.generate_password_hash(data['password'])
         }
         insert_user(user_insert_data)
         return True
@@ -92,7 +92,8 @@ class User_Obj(object):
         session['firstName']= data['firstName']
         session['lastName']= data['lastName']
         session['email']= data['email']
-        if validate_registration(data):
+        user_input = data
+        if validate_registration(user_input):
             session["logged_in"] = True
             return True
         else:

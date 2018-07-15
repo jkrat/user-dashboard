@@ -16,7 +16,7 @@ def new_user_page():
     return render_template("success.html")
 
 def access_wall():
-    return render_template("success.html")
+    return render_template("wall.html")
 
 def login():
     if User.login(request.form):
