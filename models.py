@@ -33,6 +33,10 @@ def get_all_users_except_current():
     query = "SELECT id, first_name, last_name FROM users WHERE id <> {};".format(session['id'])
     return mysql.query_db(query)
 
+def get_messages_to_user():
+    query = "SELECT users.first_name, users.last_name, messages.id, messages.content, messages.created_at FROM users JOIN messages ON users.id = messages.user_id JOIN users as users2 ON messages.user_id2 = users2.id WHERE user_id2 = {};".format(session['id'])
+    return mysql.query_db(query)
+
 # registration and login -------------------
 
 def validate_registration(data):   
@@ -101,9 +105,6 @@ def validate_login(data):
 def fill_user_dropdown():
     return get_all_users_except_current()
 
-
-
-
 # Classes -------------------
 
 class User_Obj(object):
@@ -129,7 +130,14 @@ class User_Obj(object):
         flash('You have been logged out', 'logout')
         session.clear()  #OR session['count'] = 0 OR session.clear() OR session.pop('')
 
+class Message_Obj(object):
+    # def create(self, data):
+    # def delete(self, data):
+    def display(self):
+        return get_messages_to_user()
 
+
+   
         
 
 

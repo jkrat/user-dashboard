@@ -84,28 +84,19 @@
         <div id='main'>
             <div class="container messages">
                 <h5>3 Messages in your inbox</h5>
-                <!-- {% for message in messages %}
+                {% for message in messages %}
                 <div class="row">
                     <div class="col-11">
-                        <div>{{ message['users.first_name'] }} said (3 hours ago) {{ message['content'] }}</div>
+                        <div>{{ message['first_name'] }} {{ message['last_name'] }} said (3 hours ago) {{ message['content'] }}</div>
                     </div>
                     <div class="col trash_container">
                         <span class="trash" style="font-size: 1.4em;">
-                            <a href="/delete/{{ message['id'] }}"><i class="fas fa-trash-alt"></i></a>
+                            <a href="/wall"><i class="fas fa-trash-alt"></i></a>
+                            <!-- /delete/{{ message['id'] }} -->
                         </span>
                     </div>
                 </div>
-                {% endfor %} -->
-                <div class="row">
-                    <div class="col-11">
-                        <div>dafd asdfasdads da sdfg sdfg sfdg sfgdfasdfasdfasdf</div>
-                    </div>
-                    <div class="col trash_container">
-                        <span class="trash" style="font-size: 1.4em;">
-                            <i class="fas fa-trash-alt"></i>
-                        </span>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
             <div class="container write">
                 <h5>Send a message</h5>
