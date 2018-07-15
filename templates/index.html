@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Registration Form</title>
+    <link rel="stylesheet" type="text/css" href="../static/CSS/bootstrap.css">
+    <style>
+        .wrapper {
+            min-height: 800px;
+            width: 1000px;
+            margin: 0px auto;
+            padding: 50px 20px;
+        }
+        #main {
+            width: 100%;
+            border: 1px solid slategray;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            border-radius: 5px;
+        }
+        div.container {
+            margin: 20px;
+            width: 400px;
+        }
+        .text-red {
+            color: rgb(213, 63, 63);
+            display: inline;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class='wrapper'>
+        <h2>Login and Registration</h2>
+        {% with errors = get_flashed_messages(category_filter=["logout"]) %}
+        {% if errors %}
+            {% for msg in errors %}
+                <span class="text-red">{{ msg }}</span>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+        <div id='main'>
+            <div class="container">
+                <h4>Register here!</h4>
+
+                <form action="/register" method="POST">
+                    <div class="form-group">
+                        <label>First name:</label>
+                        <input type="text" class="form-control {{ session['firstName_validation_error'] }}" name="firstName"  placeholder="first name" value={{ session['firstName'] }}>
+                            <div class="invalid-feedback">Invalid first name</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Last name:</label>
+                        <input type="text" class="form-control {{ session['lastName_validation_error'] }}" name="lastName"  placeholder="last name" value={{ session['lastName'] }}>
+                        <div class="invalid-feedback">Invalid last name</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email:</label>
+                        <input type="text" class="form-control {{ session['email_validation_error'] }}" name="email" placeholder="email" value={{ session['email'] }}>
+                        {% with errors = get_flashed_messages(category_filter=["email"]) %}
+                        {% if errors %}
+                            {% for msg in errors %}
+                                <div class="invalid-feedback">{{ msg }}</div>
+                            {% endfor %}
+                        {% endif %}
+                        {% endwith %}
+                    </div>
+        
+                    <div class="form-group">
+                        <label>Password:</label>
+                        <input type="password" class="form-control {{ session['password_validation_error'] }}" name="password" value="" placeholder="password">
+                        <div class="invalid-feedback">Password should be more than 8 characters</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Confirm password:</label>
+                        <input type="password" class="form-control {{ session['confirmPassword_validation_error'] }}" name="confirmPassword" value="" placeholder="Confirm Password">
+                        <div class="invalid-feedback">Passwords should match</div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </form>
+                </div>
+                <div class="container">
+                    <h4>Login here!</h4>
+                    {% with errors = get_flashed_messages(category_filter=["login_error"]) %}
+                    {% if errors %}
+                        {% for msg in errors %}
+                            <span class="text-red">{{ msg }}</span>
+                        {% endfor %}
+                    {% endif %}
+                    {% endwith %}
+                    <form action="/login" method="POST">
+                        <div class="form-group">
+                            <label>Email address</label>
+                            <input type="email" class="form-control" name="email" placeholder="email" value={{ session['login-email'] }}>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" class="form-control" name="password" value="" placeholder="password">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
