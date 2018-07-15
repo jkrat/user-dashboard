@@ -1,5 +1,5 @@
 from flask import Flask, flash, render_template, request, redirect, session
-from models import User_Obj
+from models import User_Obj, fill_user_dropdown
 
 User = User_Obj()
 
@@ -16,7 +16,8 @@ def new_user_page():
     return render_template("success.html")
 
 def access_wall():
-    return render_template("wall.html")
+    users = fill_user_dropdown()
+    return render_template("wall.html", users=users)
 
 def login():
     if User.login(request.form):

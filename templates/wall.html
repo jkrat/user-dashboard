@@ -114,10 +114,9 @@
                     <div class="form-group">
                         <label for="exampleFormControlSelect1">Choose a user</label>
                         <select class="form-control" name="select_user">
-                            <!-- {% for user in users %}
-                            <option id="{{ user['id'] }}">{{user['first_name']}}, " " {{ user['last_name']  }}</option>
-                            {% endfor %} -->
-                            <option value="user"></option>
+                            {% for user in users %}
+                            <option id="{{ user['id'] }}">{{user['first_name']}} {{ user['last_name']  }}</option>
+                            {% endfor %}
                         </select>
                     </div>
                     <div class="form-group">

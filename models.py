@@ -9,9 +9,13 @@ app = Flask(__name__)
 app.secret_key = 'dortmund'
 bcrypt = Bcrypt(app)
 
+# connectino to database -------------------
+
 def db_connection(db_name):
     global mysql
     mysql = connectToMySQL(db_name)
+
+# database queries -------------------
 
 def check_for_duplicate_email(data):
     query = "SELECT email FROM users WHERE email = %(email)s;"
@@ -24,6 +28,12 @@ def insert_user(data):
 def check_password_match(data):
     query = "SELECT id, first_name, password FROM users WHERE email = %(email)s;"
     return mysql.query_db(query, data)
+
+def get_all_users_except_current():
+    query = "SELECT id, first_name, last_name FROM users WHERE id <> {};".format(session['id'])
+    return mysql.query_db(query)
+
+# registration and login -------------------
 
 def validate_registration(data):   
     #name validations
@@ -85,6 +95,16 @@ def validate_login(data):
         session['login-email'] = request.form['email']
     flash("You could not be logged in", "login_error")
     return False
+
+# Page creators -------------------
+
+def fill_user_dropdown():
+    return get_all_users_except_current()
+
+
+
+
+# Classes -------------------
 
 class User_Obj(object):
     def create(self, data):
