@@ -17,7 +17,7 @@
             width: 1000px;
             margin: 0px auto;
             padding: 20px 20px;
-            background-color: lightslategray;
+            background-color: rgb(185, 189, 194);
         }
         .header {
             display: flex;
@@ -26,6 +26,7 @@
         }
         hr {
             margin-top: .3rem;
+            background-color: rgb(84, 84, 194);
         }
         .right_head {
             display: inline-block;
@@ -37,6 +38,7 @@
         } */
         #main {
             width: 100%;
+            max-height: 550px;
             padding: 20px;
             display: flex;
             justify-content: space-between;
@@ -83,7 +85,7 @@
         <hr>
         <div id='main'>
             <div class="container messages">
-                <h5>3 Messages in your inbox</h5>
+                <h5>{{ count }} Messages in your inbox</h5>
                 {% for message in messages %}
                 <div class="row">
                     <div class="col-11">
@@ -91,8 +93,7 @@
                     </div>
                     <div class="col trash_container">
                         <span class="trash" style="font-size: 1.4em;">
-                            <a href="/wall"><i class="fas fa-trash-alt"></i></a>
-                            <!-- /delete/{{ message['id'] }} -->
+                            <a href="/delete/{{ message['id'] }}"><i class="fas fa-trash-alt"></i></a>
                         </span>
                     </div>
                 </div>
@@ -100,18 +101,17 @@
             </div>
             <div class="container write">
                 <h5>Send a message</h5>
-                <p>You have sent a total of 14 messages so far.</p>
-                <form action="/wall">
+                <form action="/create" method="POST">
                     <div class="form-group">
                         <label for="exampleFormControlSelect1">Choose a user</label>
                         <select class="form-control" name="select_user">
                             {% for user in users %}
-                            <option id="{{ user['id'] }}">{{user['first_name']}} {{ user['last_name']  }}</option>
+                            <option value="{{ user['id'] }}">{{user['first_name']}} {{ user['last_name']  }}</option>
                             {% endfor %}
                         </select>
                     </div>
                     <div class="form-group">
-                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                            <textarea class="form-control" name="content" rows="5"></textarea>
                             </div>
                     <button type="submit" class="btn btn-primary">Send</button>
                 </form>

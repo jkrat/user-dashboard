@@ -19,4 +19,10 @@ def routes(app):
     @app.route("/logout")
     def logout(): return views.logout()
 
+    @app.route("/create", methods=['POST'])
+    def create(): return views.create_message()
+   
+    @app.route("/delete/<id>")
+    def delete(id): return views.delete_message(id)
+
 
