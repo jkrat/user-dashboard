@@ -13,17 +13,18 @@ def register_user():
     else:
         return redirect("/")
 
-def new_user_page(): 
+def new_user_page():
     return render_template("success.html")
 
 def access_wall():
-    message_info = Message.display()
-    messages = message_info['message_list']
-    message_count = message_info['message_count']
-    print(message_count)
-    print(type(message_count))
-    users = fill_user_dropdown()
-    return render_template("wall.html", messages=messages, count=message_count, users=users)
+    if 'logged_in' in session:
+        if session['logged_in']:
+            message_info = Message.display()
+            messages = message_info['message_list']
+            message_count = message_info['message_count']
+            users = fill_user_dropdown()
+            return render_template("wall.html", messages=messages, count=message_count, users=users)
+    return redirect("/")
 
 def login():
     if User.login(request.form):
@@ -33,7 +34,7 @@ def login():
 
 def logout():
     User.logout()
-    return redirect("/")
+    return render_template("logout.html")
 
 def create_message():
     Message.create(request.form)
@@ -43,3 +44,12 @@ def delete_message(num):
     data = {'id' : int(num)}
     Message.delete(data)
     return redirect('/wall')
+
+def access_admin():
+    if 'user_level' in session:
+        if User.check_level():
+            return render_template("admin.html")
+        else:
+            return redirect('/wall')
+    else:
+        return redirect("/")

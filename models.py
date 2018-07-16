@@ -26,7 +26,7 @@ def insert_user(data):
     return mysql.query_db(query, data)
 
 def check_password_match(data):
-    query = "SELECT id, first_name, password FROM users WHERE email = %(email)s;"
+    query = "SELECT id, first_name, password, user_level FROM users WHERE email = %(email)s;"
     return mysql.query_db(query, data)
 
 def get_all_users_except_current():
@@ -42,7 +42,7 @@ def create_message(data):
     return mysql.query_db(query, data)
 
 def delete_message(data):
-    query = "DELETE FROM messages WHERE id = {};".format(data['id'])
+    query = "DELETE FROM messages WHERE id = {} AND user_id2 = {};".format(data['id'], session['id'])
     return mysql.query_db(query, data)
 
 # registration and login -------------------
@@ -101,6 +101,7 @@ def validate_login(data):
                 session.clear()
                 session["id"] = password_match_result[0]['id']
                 session["firstName"] = password_match_result[0]['first_name']
+                session["user_level"] = password_match_result[0]['user_level']
                 return True           
     #user validation fail
     if request.form['email']:
@@ -123,24 +124,29 @@ class User_Obj(object):
         session['email']= data['email']
         user_input = data
         if validate_registration(user_input):
-            session["logged_in"] = True
+            session.pop('lastName')
+            session.pop('email')
             return True
         else:
             return False
     def login(self, data):
         if validate_login(data):
             session["logged_in"] = True
-            print(session)
             return True
         else: 
             return False
     def logout(self):
         flash('You have been logged out', 'logout')
-        session.clear()  #OR session['count'] = 0 OR session.clear() OR session.pop('')
+        session.clear()
+    def check_level(self):
+        return session['user_level'] == 9
+        
 
 class Message_Obj(object):
     def create(self, data):
-        return create_message(data)
+        if len(data['content']) < 255:
+            create_message(data)
+        return
 
     def delete(self, data):
         return delete_message(data)

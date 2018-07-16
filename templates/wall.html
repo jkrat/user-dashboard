@@ -15,9 +15,9 @@
         .wrapper {
             height: 700px;
             width: 1000px;
+            background-color: rgb(233, 228, 235);
             margin: 0px auto;
             padding: 20px 20px;
-            background-color: rgb(185, 189, 194);
         }
         .header {
             display: flex;
@@ -31,11 +31,8 @@
         .right_head {
             display: inline-block;
             padding: 10px 20px 0px 10px;
-            margin-left: 40px;
+            margin-left: 15px;
         }
-        /* .true {
-            display: hidden;
-        } */
         #main {
             width: 100%;
             max-height: 550px;
@@ -79,6 +76,7 @@
             <h3>The WALL</h3>
             <div class="{{ session['logged_in'] }}">
                 <p class="right_head">Welcome {{ session['firstName']}}</p>
+                <a href="/admin"><i class="fab fa-buysellads"></i></a>
                 <a href="/logout" name="logout" class="right_head">log off</a>
             </div>
         </div>

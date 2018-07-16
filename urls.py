@@ -24,5 +24,8 @@ def routes(app):
    
     @app.route("/delete/<id>")
     def delete(id): return views.delete_message(id)
+    
+    @app.route("/admin")
+    def admin(): return views.access_admin()
 
 
